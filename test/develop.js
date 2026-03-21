@@ -1,3 +1,0 @@
-const
-    rdfjs = require('../src');
-

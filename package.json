@@ -2,23 +2,18 @@
   "name": "rdfjs",
   "version": "1.0.0",
   "description": "",
-  "main": "src/index.js",
   "files": [
-    "src/*"
+    "data-model/*"
   ],
-  "dependencies": {
-    "@pfoerdie/utility": "^1.0.0"
-  },
   "devDependencies": {
-    "jest": "^28.1.0"
+    "@types/jest": "^30.0.0",
+    "@types/node": "^25.5.0",
+    "jest": "^30.3.0",
+    "ts-jest": "^29.4.6",
+    "typescript": "^5.9.3"
   },
   "scripts": {
     "test": "jest"
-  },
-  "jest": {
-    "testMatch": [
-      "<rootDir>/test/**/*.test.js"
-    ]
   },
   "repository": {
     "type": "git",
