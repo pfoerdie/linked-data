@@ -1,11 +1,31 @@
-import Term from './Term'
+import Term, { TermSpec, TermData } from './Term'
 
-export default class DefaultGraph extends Term {
+/** @see https://rdf.js.org/data-model-spec/#defaultgraph-interface */
+export interface DefaultGraphSpec extends TermSpec {
+    termType: string
+    value: string
+    equals(other?: Term): boolean
+}
 
-    termType = 'DefaultGraph'
+export type DefaultGraphData = TermData & {
+    termType: 'DefaultGraph'
+}
+
+export default class DefaultGraph extends Term implements DefaultGraphSpec {
+
+    /**
+     * termType contains the constant "DefaultGraph".
+     */
+    readonly termType = 'DefaultGraph' as const
+
+    /**
+     * value contains an empty string as constant value.
+     */
+    readonly value = '' as const
 
     constructor() {
-        super('')
+        super()
+        Object.freeze(this)
     }
 
 }

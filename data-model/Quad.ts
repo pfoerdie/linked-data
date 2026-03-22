@@ -1,25 +1,59 @@
-import Term from './Term'
+import Term, { TermSpec, TermData } from './Term'
+import NamedNode from './NamedNode'
+import BlankNode from './BlankNode'
+import Literal from './Literal'
+import Variable from './Variable'
+import DefaultGraph from './DefaultGraph'
 
-export default class Quad {
-
+/** @see https://rdf.js.org/data-model-spec/#defaultgraph-interface */
+export interface QuadSpec extends TermSpec {
+    termType: string
+    value: string
     subject: Term
     predicate: Term
     object: Term
     graph: Term
+    equals(other?: Term): boolean
+}
 
-    constructor(subject: Term, predicate: Term, object: Term, graph: Term) {
-        this.subject = subject
-        this.predicate = predicate
-        this.object = object
-        this.graph = graph
-    }
+export type QuadData = TermData & {
+    termType: 'Quad'
+    subject: TermData
+    predicate: TermData
+    object: TermData
+    graph: TermData
+}
 
-    equals(other: Quad): boolean {
-        return this === other ||
-            this.subject.equals(other.subject) &&
-            this.predicate.equals(other.predicate) &&
-            this.object.equals(other.object) &&
-            this.graph.equals(other.graph)
-    }
+export default class Quad extends Term implements QuadSpec {
+
+    /**
+     * termType contains the constant "Quad".
+     */
+    readonly termType = 'Quad' as const
+
+    /**
+     * value contains an empty string as constant value.
+     */
+    readonly value = '' as const
+
+    /**
+     * subject the subject, which is a NamedNode, BlankNode, Variable or Quad.
+     */
+    readonly subject: Term
+
+    /**
+     * predicate the predicate, which is a NamedNode or Variable.
+     */
+    readonly predicate: Term
+
+    /**
+     * object the object, which is a NamedNode, Literal, BlankNode or Variable.
+     */
+    readonly object: Term
+
+    /**
+     * graph the named graph, which is a DefaultGraph, NamedNode, BlankNode or Variable.
+     */
+    readonly graph: Term
 
 }

@@ -9,41 +9,38 @@ export interface TermSpec {
 
 export type TermData = {
     termType: string
-    value: string
 }
 
 export default abstract class Term implements TermSpec {
 
-    readonly termType: string
-    readonly value: string
+    /**
+     * termType contains a value that identifies the concrete interface of the term, since Term itself is not directly instantiated.
+     * Possible values include "NamedNode", "BlankNode", "Literal", "Variable", "DefaultGraph" and "Quad".
+     */
+    abstract readonly termType: string
 
-    constructor({ termType = new.target.name, value = '' }: Partial<TermData>) {
-        if (!isString(termType)) throw new Error(`termType must be a string`)
-        if (termType !== new.target.name) throw new Error(`termType must be "${new.target.name}"`)
-        if (!isString(value)) throw new Error(`value must be a string`)
+    /**
+     * value is refined by each interface which extends Term.
+     */
+    abstract readonly value: string
 
-        this.termType = termType
-        this.value = value
-
-        Object.defineProperties(this, {
-            termType: { writable: false, configurable: false },
-            value: { writable: false, configurable: false }
-        })
-    }
-
-    equals(other?: unknown): other is Term | TermSpec {
+    /**
+     * equals() returns true when called with parameter other on an object term if all of the conditions below hold:
+     * - other is neither null nor undefined;
+     * - term.termType is the same string as other.termType;
+     * - other follows the additional constraints of the specific Term interface implemented by term (e.g., NamedNode, Literal, …);
+     * otherwise, it returns false.
+     */
+    equals(other?: unknown): boolean {
+        // TODO make equals abstract too
         return this === other || (
-            other instanceof Term
-                ? this.termType === other.termType && this.value === other.value
-                : isRecord(other) && this.termType === other.termType && this.value === other.value
+            (other instanceof Term || isRecord(other))
+            && this.termType === other.termType
+            && this.value === other.value
         )
     }
 
-    toJSON(): TermData {
-        return {
-            termType: this.termType,
-            value: this.value
-        }
-    }
+    abstract toString(): string
+    abstract toJSON(): TermData
 
 }
