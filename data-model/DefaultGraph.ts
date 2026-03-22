@@ -1,4 +1,5 @@
 import Term, { TermSpec, TermData } from './Term'
+import { isString, isRecord } from '../util/types'
 
 /** @see https://rdf.js.org/data-model-spec/#defaultgraph-interface */
 export interface DefaultGraphSpec extends TermSpec {
@@ -26,6 +27,23 @@ export default class DefaultGraph extends Term implements DefaultGraphSpec {
     constructor() {
         super()
         Object.freeze(this)
+    }
+
+    /**
+     * equals() returns true if all general Term.equals conditions hold; otherwise, it returns false.
+     */
+    equals(other?: unknown): boolean {
+        if (this === other) return true
+        if (other instanceof Term) return other instanceof DefaultGraph
+        return isRecord(other) && this.termType === other.termType
+    }
+
+    // TODO: toString
+
+    toJSON(): DefaultGraphData {
+        return {
+            termType: this.termType
+        }
     }
 
 }

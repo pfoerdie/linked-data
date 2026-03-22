@@ -1,4 +1,5 @@
 import Term, { TermSpec, TermData } from './Term'
+import { isString, isRecord } from '../util/types'
 
 /** @see https://rdf.js.org/data-model-spec/#namednode-interface */
 export interface NamedNodeSpec extends TermSpec {
@@ -27,9 +28,19 @@ export default class NamedNode extends Term implements NamedNodeSpec {
     constructor(value: string) {
         if (typeof value === 'string') throw new Error(`value must be a string`)
         // TODO: validate that value is an IRI
+
         super()
         this.value = value
         Object.freeze(this)
+    }
+
+    /**
+     * equals() returns true if all general Term.equals conditions hold and term.value is the same string as other.value; otherwise, it returns false.
+     */
+    equals(other?: unknown): boolean {
+        if (this === other) return true
+        if (other instanceof Term) return other instanceof NamedNode && this.value === other.value
+        return isRecord(other) && this.termType === other.termType && this.value === other.value
     }
 
     toString(): string {

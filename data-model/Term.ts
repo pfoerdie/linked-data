@@ -31,14 +31,7 @@ export default abstract class Term implements TermSpec {
      * - other follows the additional constraints of the specific Term interface implemented by term (e.g., NamedNode, Literal, …);
      * otherwise, it returns false.
      */
-    equals(other?: unknown): boolean {
-        // TODO make equals abstract too
-        return this === other || (
-            (other instanceof Term || isRecord(other))
-            && this.termType === other.termType
-            && this.value === other.value
-        )
-    }
+    abstract equals(other?: unknown): boolean
 
     abstract toString(): string
     abstract toJSON(): TermData
