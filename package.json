@@ -1,5 +1,5 @@
 {
-  "name": "rdfjs",
+  "name": "@pfoerdie/linked-data",
   "version": "1.0.0",
   "description": "",
   "files": [
@@ -17,12 +17,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Pfoerdie/rdfjs.git"
+    "url": "git+https://github.com/pfoerdie/linked-data.git"
   },
-  "author": "pfoerdie@gmail.com",
+  "author": "Simon Petrac <pfoerdie@gmail.com>",
   "license": "GPL-3.0-or-later",
   "bugs": {
-    "url": "https://github.com/Pfoerdie/rdfjs/issues"
+    "url": "https://github.com/pfoerdie/linked-data/issues"
   },
-  "homepage": "https://github.com/Pfoerdie/rdfjs#readme"
+  "homepage": "https://github.com/pfoerdie/linked-data#readme"
 }
