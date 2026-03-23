@@ -1,5 +1,5 @@
 import Term, { TermSpec, TermData } from './Term'
-import { isString, isRecord } from '../util/types'
+import { isRecord } from '../util/types'
 
 /** @see https://rdf.js.org/data-model-spec/#defaultgraph-interface */
 export interface DefaultGraphSpec extends TermSpec {

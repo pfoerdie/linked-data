@@ -76,6 +76,12 @@ export default class Quad extends Term implements QuadSpec {
             && this.predicate.equals(other.predicate) && this.object.equals(other.object) && this.graph.equals(other.graph)
     }
 
+    toString(): string {
+        return (this.graph instanceof DefaultGraph)
+            ? `${this.subject} ${this.predicate} ${this.object} .`
+            : `${this.subject} ${this.predicate} ${this.object} ${this.graph} .`
+    }
+
     // TODO: toString
 
     toJSON(): QuadData {

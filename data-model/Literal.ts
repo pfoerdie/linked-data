@@ -1,6 +1,6 @@
 import Term, { TermSpec, TermData } from './Term'
 import NamedNode, { NamedNodeSpec, NamedNodeData } from './NamedNode'
-import { isString, isRecord } from '../util/types'
+import { isRecord, isString, LanguageTag, isLanguageTag } from '../util/types'
 
 /** @see https://rdf.js.org/data-model-spec/#literal-interface */
 export interface LiteralSpec extends TermSpec {
@@ -44,7 +44,7 @@ export default class Literal extends Term implements LiteralSpec {
     /**
      * language the language as lowercase [BCP47] string (examples: "en", "en-gb") or an empty string if the literal has no language.
      */
-    readonly language: string
+    readonly language: LanguageTag
 
     /**
      * direction is not falsy if the string is a directional language-tagged string. In this case, the direction MUST be either be "ltr" or "rtl".
@@ -67,7 +67,7 @@ export default class Literal extends Term implements LiteralSpec {
         const language = isString(languageOrDatatype) ? languageOrDatatype
             : languageOrDatatype instanceof NamedNode ? ''
                 : isRecord(languageOrDatatype) ? languageOrDatatype.language : ''
-        if (!isString(language)) throw new Error(`language must be a string`)
+        if (!isLanguageTag(language)) throw new Error(`language must be a string`)
 
         const direction = languageOrDatatype instanceof NamedNode ? ''
             : isRecord(languageOrDatatype) ? languageOrDatatype.direction ?? '' : ''
