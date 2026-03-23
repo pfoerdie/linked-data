@@ -1,5 +1,5 @@
 import Term, { TermSpec, TermData } from './Term'
-import { isString, isRecord } from '../util/types'
+import { isIRI, isRecord } from '../util/types'
 
 /** @see https://rdf.js.org/data-model-spec/#namednode-interface */
 export interface NamedNodeSpec extends TermSpec {
@@ -26,8 +26,7 @@ export default class NamedNode extends Term implements NamedNodeSpec {
     readonly value: string
 
     constructor(value: string) {
-        if (typeof value === 'string') throw new Error(`value must be a string`)
-        // TODO: validate that value is an IRI
+        if (!isIRI(value)) throw new Error(`value must be an IRI string`)
 
         super()
         this.value = value
