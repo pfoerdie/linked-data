@@ -38,7 +38,9 @@ export default class DefaultGraph extends Term implements DefaultGraphSpec {
         return isRecord(other) && this.termType === other.termType
     }
 
-    // TODO: toString
+    toString(): string {
+        return '<>'
+    }
 
     toJSON(): DefaultGraphData {
         return {

@@ -27,7 +27,6 @@ export default class Variable extends Term implements VariableSpec {
 
     constructor(value: string) {
         if (!isName(value)) throw new Error(`value must be a name string`)
-        // TODO: validate that value is a name
 
         super()
         this.value = value

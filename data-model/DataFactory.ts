@@ -19,6 +19,17 @@ export interface DataFactorySpec {
 
 export default class DataFactory implements DataFactorySpec {
 
+    namedNode(value: string): NamedNode {
+        return new NamedNode(value)
+    }
+
+    private blankNodePrefix: string = 'b'
+    private blankNodeCount: number = 0
+
+    blankNode(value?: string): BlankNode {
+        return new BlankNode(value ?? this.blankNodePrefix + this.blankNodeCount++)
+    }
+
     // TODO: data factory methods
 
 }

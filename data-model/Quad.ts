@@ -77,12 +77,12 @@ export default class Quad extends Term implements QuadSpec {
     }
 
     toString(): string {
+        const subjectString = this.subject instanceof Quad
+            ? `<< ${this.subject} >>` : `${this.subject}`
         return (this.graph instanceof DefaultGraph)
-            ? `${this.subject} ${this.predicate} ${this.object} .`
-            : `${this.subject} ${this.predicate} ${this.object} ${this.graph} .`
+            ? `${subjectString} ${this.predicate} ${this.object} .`
+            : `${subjectString} ${this.predicate} ${this.object} ${this.graph} .`
     }
-
-    // TODO: toString
 
     toJSON(): QuadData {
         return {
