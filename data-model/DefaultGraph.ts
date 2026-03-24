@@ -15,12 +15,12 @@ export type DefaultGraphData = TermData & {
 export default class DefaultGraph extends Term implements DefaultGraphSpec {
 
     /**
-     * termType contains the constant "DefaultGraph".
+     * contains the constant "DefaultGraph".
      */
     readonly termType = 'DefaultGraph' as const
 
     /**
-     * value contains an empty string as constant value.
+     * contains an empty string as constant value.
      */
     readonly value = '' as const
 
@@ -30,7 +30,7 @@ export default class DefaultGraph extends Term implements DefaultGraphSpec {
     }
 
     /**
-     * equals() returns true if all general Term.equals conditions hold; otherwise, it returns false.
+     * returns true if all general Term.equals conditions hold; otherwise, it returns false.
      */
     equals(other?: unknown): boolean {
         if (this === other) return true
@@ -39,7 +39,7 @@ export default class DefaultGraph extends Term implements DefaultGraphSpec {
     }
 
     toString(): string {
-        return '<>'
+        return ''
     }
 
     toJSON(): DefaultGraphData {
@@ -49,3 +49,5 @@ export default class DefaultGraph extends Term implements DefaultGraphSpec {
     }
 
 }
+
+export const defaultGraph = new DefaultGraph()

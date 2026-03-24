@@ -17,12 +17,12 @@ export type BlankNodeData = TermData & {
 export default class BlankNode extends Term implements BlankNodeSpec {
 
     /**
-     * termType contains the constant "BlankNode".
+     * contains the constant "BlankNode".
      */
     readonly termType = 'BlankNode' as const
 
     /**
-     * value blank node name as a string, without any serialization specific prefixes,
+     * blank node name as a string, without any serialization specific prefixes,
      * e.g. when parsing, if the data was sourced from Turtle,remove "_:",
      * if it was sourced from RDF/XML, do not change the blank node name (example: "blank3")
      */
@@ -37,7 +37,8 @@ export default class BlankNode extends Term implements BlankNodeSpec {
     }
 
     /**
-     * equals() returns true if all general Term.equals conditions hold and term.value is the same string as other.value; otherwise, it returns false.
+     * returns true if all general Term.equals conditions hold and term.value
+     * is the same string as other.value; otherwise, it returns false.
      */
     equals(other?: unknown): boolean {
         if (this === other) return true
@@ -45,6 +46,7 @@ export default class BlankNode extends Term implements BlankNodeSpec {
         return isRecord(other) && this.termType === other.termType && this.value === other.value
     }
 
+    /** @see https://www.w3.org/TR/rdf12-n-quads/#grammar-production-BLANK_NODE_LABEL */
     toString(): string {
         return '_:' + this.value
     }

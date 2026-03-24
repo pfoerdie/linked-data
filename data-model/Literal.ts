@@ -32,29 +32,29 @@ export const rdf_dirLangString = new NamedNode('http://www.w3.org/1999/02/22-rdf
 export default class Literal extends Term implements LiteralSpec {
 
     /**
-     * termType contains the constant "Literal".
+     * contains the constant "Literal".
      */
     readonly termType = 'Literal' as const
 
     /**
-     * value the text value, unescaped, without language or type (example: "Brad Pitt")
+     * the text value, unescaped, without language or type (example: "Brad Pitt")
      */
     readonly value: string
 
     /**
-     * language the language as lowercase [BCP47] string (examples: "en", "en-gb") or an empty string if the literal has no language.
+     * the language as lowercase [BCP47] string (examples: "en", "en-gb") or an empty string if the literal has no language.
      */
     readonly language: LanguageTag
 
     /**
-     * direction is not falsy if the string is a directional language-tagged string. In this case, the direction MUST be either be "ltr" or "rtl".
+     * is not falsy if the string is a directional language-tagged string. In this case, the direction MUST be either be "ltr" or "rtl".
      * Implementations supporting this feature should use an empty string when no direction is given.
      * null or undefined values are allowed to maintain compatibility with legacy implementations.
      */
     readonly direction: 'ltr' | 'rtl' | ''
 
     /**
-     * datatype a NamedNode whose IRI represents the datatype of the literal.
+     * a NamedNode whose IRI represents the datatype of the literal.
      * If the literal has a language and a direction, its datatype has the IRI "http://www.w3.org/1999/02/22-rdf-syntax-ns#dirLangString".
      * If the literal has a language without direction, its datatype has the IRI "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString".
      * Otherwise, if no datatype is explicitly specified, the datatype has the IRI "http://www.w3.org/2001/XMLSchema#string".
@@ -88,7 +88,7 @@ export default class Literal extends Term implements LiteralSpec {
     }
 
     /**
-     * equals() returns true if all general Term.equals conditions hold, term.value is the same string as other.value,
+     * returns true if all general Term.equals conditions hold, term.value is the same string as other.value,
      * term.language is the same string as other.language, term.direction is the same string as other.direction or are both falsy,
      * and term.datatype.equals(other.datatype) evaluates to true; otherwise, it returns false.
      */
@@ -100,15 +100,15 @@ export default class Literal extends Term implements LiteralSpec {
             && this.language === other.language && this.direction === other.direction && this.datatype.equals(other.datatype)
     }
 
+    /** @see https://www.w3.org/TR/rdf12-n-quads/#grammar-production-literal */
     toString(): string {
-        const delimiterChar = `"`
-        const encodedValue = this.value.replace(/\\/g, '\\\\')
-            .replace(new RegExp(delimiterChar, 'g'), `\\${delimiterChar}`)
-        const suffixTag = this.language ? this.direction
+        // TODO: correctly encode value
+        const encoded = encodeURIComponent(this.value)
+        const suffix = this.language ? this.direction
             ? `@${this.language}--${this.direction}`
             : `@${this.language}` : this.datatype.equals(xsd_string)
-            ? '' : `^^${this.datatype.toString()}`
-        return delimiterChar + encodedValue + delimiterChar + suffixTag
+            ? '' : `^^${this.datatype}`
+        return `"${encoded}"${suffix}`
     }
 
     toJSON(): LiteralData {

@@ -16,12 +16,12 @@ export type VariableData = TermData & {
 export default class Variable extends Term implements VariableSpec {
 
     /**
-     * termType contains the constant "Variable".
+     * contains the constant "Variable".
      */
     readonly termType = 'Variable' as const
 
     /**
-     * value the name of the variable without leading "?" (example: "a").
+     * the name of the variable without leading "?" (example: "a").
      */
     readonly value: Name
 
@@ -34,7 +34,7 @@ export default class Variable extends Term implements VariableSpec {
     }
 
     /**
-     * equals() returns true if all general Term.equals conditions hold and term.value is the same string as other.value; otherwise, it returns false.
+     * returns true if all general Term.equals conditions hold and term.value is the same string as other.value; otherwise, it returns false.
      */
     equals(other?: unknown): boolean {
         if (this === other) return true

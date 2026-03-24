@@ -16,12 +16,12 @@ export type NamedNodeData = TermData & {
 export default class NamedNode extends Term implements NamedNodeSpec {
 
     /**
-     * termType contains the constant "NamedNode".
+     * contains the constant "NamedNode".
      */
     readonly termType = 'NamedNode' as const
 
     /**
-     * value the IRI of the named node (example: "http://example.org/resource").
+     * the IRI of the named node (example: "http://example.org/resource").
      */
     readonly value: string
 
@@ -34,7 +34,8 @@ export default class NamedNode extends Term implements NamedNodeSpec {
     }
 
     /**
-     * equals() returns true if all general Term.equals conditions hold and term.value is the same string as other.value; otherwise, it returns false.
+     * returns true if all general Term.equals conditions hold and term.value
+     * is the same string as other.value; otherwise, it returns false.
      */
     equals(other?: unknown): boolean {
         if (this === other) return true
@@ -42,6 +43,7 @@ export default class NamedNode extends Term implements NamedNodeSpec {
         return isRecord(other) && this.termType === other.termType && this.value === other.value
     }
 
+    /** @see https://www.w3.org/TR/rdf12-n-quads/#grammar-production-IRIREF */
     toString(): string {
         return '<' + this.value + '>'
     }

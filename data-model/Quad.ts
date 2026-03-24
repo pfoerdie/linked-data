@@ -28,39 +28,39 @@ export type QuadData = TermData & {
 export default class Quad extends Term implements QuadSpec {
 
     /**
-     * termType contains the constant "Quad".
+     * contains the constant "Quad".
      */
     readonly termType = 'Quad' as const
 
     /**
-     * value contains an empty string as constant value.
+     * contains an empty string as constant value.
      */
     readonly value = '' as const
 
     /**
-     * subject the subject, which is a NamedNode, BlankNode, Variable or Quad.
+     * the subject, which is a NamedNode, BlankNode, Variable or Quad.
      */
     readonly subject: NamedNode | BlankNode | Variable | Quad
 
     /**
-     * predicate the predicate, which is a NamedNode or Variable.
+     * the predicate, which is a NamedNode or Variable.
      */
     readonly predicate: NamedNode | Variable
 
     /**
-     * object the object, which is a NamedNode, Literal, BlankNode or Variable.
+     * the object, which is a NamedNode, Literal, BlankNode or Variable.
      */
     readonly object: NamedNode | Literal | BlankNode | Variable
 
     /**
-     * graph the named graph, which is a DefaultGraph, NamedNode, BlankNode or Variable.
+     * the named graph, which is a DefaultGraph, NamedNode, BlankNode or Variable.
      */
     readonly graph: DefaultGraph | NamedNode | BlankNode | Variable
 
     // TODO: constructor
 
     /**
-     * equals() returns true when called with parameter other on an object quad if all of the conditions below hold:
+     * returns true when called with parameter other on an object quad if all of the conditions below hold:
      * - other is neither null nor undefined;
      * - quad.subject.equals(other.subject) evaluates to true;
      * - quad.predicate.equals(other.predicate) evaluates to true;
@@ -76,12 +76,13 @@ export default class Quad extends Term implements QuadSpec {
             && this.predicate.equals(other.predicate) && this.object.equals(other.object) && this.graph.equals(other.graph)
     }
 
+    /** @see https://www.w3.org/TR/rdf12-n-quads/#grammar-production-tripleTerm */
     toString(): string {
-        const subjectString = this.subject instanceof Quad
-            ? `<< ${this.subject} >>` : `${this.subject}`
-        return (this.graph instanceof DefaultGraph)
-            ? `${subjectString} ${this.predicate} ${this.object} .`
-            : `${subjectString} ${this.predicate} ${this.object} ${this.graph} .`
+        // TODO: correct the format
+        const quadString = (this.graph instanceof DefaultGraph)
+            ? `${this.subject} ${this.predicate} ${this.object} .`
+            : `${this.subject} ${this.predicate} ${this.object} ${this.graph} .`
+        return `<<( ${quadString} )>>`
     }
 
     toJSON(): QuadData {
