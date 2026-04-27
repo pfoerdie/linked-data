@@ -52,3 +52,27 @@ export function isRecord(value: unknown): value is Record<any, any> {
 export function isFunction(value: unknown): value is Function {
     return typeof value === 'function'
 }
+
+export * from '@rdfjs/types'
+
+import type { NamedNode, BlankNode, Literal, Variable, DefaultGraph } from '@rdfjs/types'
+
+export function isNamedNode(value: unknown): value is NamedNode {
+    return isRecord(value) && value.termType === 'NamedNode'
+}
+
+export function isBlankNode(value: unknown): value is BlankNode {
+    return isRecord(value) && value.termType === 'BlankNode'
+}
+
+export function isLiteral(value: unknown): value is Literal {
+    return isRecord(value) && value.termType === 'Literal'
+}
+
+export function isVariable(value: unknown): value is Variable {
+    return isRecord(value) && value.termType === 'Variable'
+}
+
+export function isDefaultGraph(value: unknown): value is DefaultGraph {
+    return isRecord(value) && value.termType === 'DefaultGraph'
+}
