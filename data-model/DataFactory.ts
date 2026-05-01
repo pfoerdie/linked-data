@@ -61,6 +61,10 @@ export default class DataFactory implements DataFactorySpec<Quad, BaseQuadSpec> 
         return this.#defaultGraph
     }
 
+    triple(subject: TermSpec, predicate: TermSpec, object: TermSpec): Quad {
+        return new Quad(subject, predicate, object, this.#defaultGraph)
+    }
+
     quad(subject: TermSpec, predicate: TermSpec, object: TermSpec, graph?: TermSpec): Quad {
         return new Quad(subject, predicate, object, graph ?? this.#defaultGraph)
     }
