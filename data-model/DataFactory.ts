@@ -9,11 +9,11 @@ import BlankNode from './BlankNode'
 import RandomNode from './RandomNode'
 import Variable from './Variable'
 import Literal from './Literal'
-import BinaryLiteral from './BinaryLiteral'
+import Binary from './Binary'
 import DefaultGraph from './DefaultGraph'
 import Quad from './Quad'
 
-type Term = NamedNode | Namespace | BlankNode | RandomNode | Variable | Literal | BinaryLiteral | DefaultGraph | Quad
+type Term = NamedNode | Namespace | BlankNode | RandomNode | Variable | Literal | Binary | DefaultGraph | Quad
 
 export default class DataFactory implements DataFactorySpec<Quad, BaseQuadSpec> {
 
@@ -52,7 +52,7 @@ export default class DataFactory implements DataFactorySpec<Quad, BaseQuadSpec> 
     }
 
     binary(bytes: string | Buffer, encoding: BufferEncoding, datatype: NamedNodeSpec) {
-        return new BinaryLiteral(bytes, encoding, datatype)
+        return new Binary(bytes, encoding, datatype)
     }
 
     #defaultGraph: DefaultGraph = new DefaultGraph()

@@ -2,6 +2,7 @@ import { type NamedNodeSpec, isNamedNode } from './types'
 import { type IRI, isIRI } from './types'
 import NamedNode from './NamedNode'
 import Literal from './Literal'
+import Binary from './Binary'
 import { isString } from './types'
 
 export default class Namespace implements NamedNodeSpec<IRI> {
@@ -45,6 +46,10 @@ export default class Namespace implements NamedNodeSpec<IRI> {
 
     literal(value: string, datatype: string) {
         return new Literal(value, this.namedNode(datatype))
+    }
+
+    binary(bytes: string | Buffer, encoding: BufferEncoding, datatype: string) {
+        return new Binary(bytes, encoding, this.namedNode(datatype))
     }
 
 }

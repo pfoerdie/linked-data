@@ -2,7 +2,7 @@ import { type LiteralSpec, isLiteral } from './types'
 import { type NamedNodeSpec, isNamedNode } from './types'
 import { isString } from './types'
 
-export default class BinaryLiteral implements LiteralSpec {
+export default class Binary implements LiteralSpec {
 
     get termType(): 'Literal' {
         return 'Literal'
@@ -48,7 +48,7 @@ export default class BinaryLiteral implements LiteralSpec {
         switch (true) {
             case this === other:
                 return true
-            case other instanceof BinaryLiteral:
+            case other instanceof Binary:
                 return this.datatype.equals(other.datatype)
                     && (this.encoding === other.encoding
                         ? this.bytes.equals(other.bytes)
