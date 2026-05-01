@@ -5,8 +5,8 @@ import { isNull, isString } from './types'
 
 export default class Literal implements LiteralSpec {
 
-    get termType() {
-        return 'Literal' as const
+    get termType(): 'Literal' {
+        return 'Literal'
     }
 
     #value: string
@@ -42,9 +42,9 @@ export default class Literal implements LiteralSpec {
                 return true
             case other instanceof Literal:
             case isLiteral(other):
-                return this.value === other.value
-                    && this.datatype.equals(other.datatype)
+                return this.datatype.equals(other.datatype)
                     && this.language === other.language
+                    && this.value === other.value
             default:
                 return false
         }
