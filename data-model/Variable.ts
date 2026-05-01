@@ -1,42 +1,32 @@
-import type { Variable as VariableSpec } from '@rdfjs/types'
-import Term, { isTerm } from './Term'
+import { type VariableSpec, isVariable } from './types'
+import { type Name, isName } from './types'
 
-export { VariableSpec }
+export default class Variable implements VariableSpec {
 
-export function isVariable(term: unknown): term is VariableSpec {
-    return isTerm(term) && term.termType === 'Variable'
-}
-
-export default abstract class Variable extends Term<'Variable'> implements VariableSpec {
-
-    get termType() {
-        return 'Variable' as const
+    get termType(): 'Variable' {
+        return 'Variable'
     }
 
-    abstract get value(): string
+    #value: Name
+
+    get value(): Name {
+        return this.#value
+    }
+
+    constructor(value: string) {
+        if (!isName(value)) throw new Error('value must be a Name string')
+        this.#value = value
+    }
 
     equals(other: unknown): boolean {
         switch (true) {
             case this === other:
                 return true
             case other instanceof Variable:
+            case isVariable(other):
                 return this.value === other.value
-            case other instanceof Term:
-                return false
             default:
-                return isVariable(other)
-                    && this.value === other.value
-        }
-    }
-
-    toString(): string {
-        return '?' + this.value
-    }
-
-    toJSON(): Pick<VariableSpec, 'termType' | 'value'> {
-        return {
-            termType: 'Variable' as const,
-            value: this.value
+                return false
         }
     }
 

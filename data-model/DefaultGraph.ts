@@ -1,20 +1,13 @@
-import type { DefaultGraph as DefaultGraphSpec } from '@rdfjs/types'
-import Term, { isTerm } from './Term'
+import { type DefaultGraphSpec, isDefaultGraph } from './types'
 
-export { DefaultGraphSpec }
+export default class DefaultGraph implements DefaultGraphSpec {
 
-export function isDefaultGraph(term: unknown): term is DefaultGraphSpec {
-    return isTerm(term) && term.termType === 'DefaultGraph'
-}
-
-export default class DefaultGraph extends Term<'DefaultGraph'> implements DefaultGraphSpec {
-
-    get termType() {
-        return 'DefaultGraph' as const
+    get termType(): 'DefaultGraph' {
+        return 'DefaultGraph'
     }
 
-    get value() {
-        return '' as const
+    get value(): '' {
+        return ''
     }
 
     equals(other: unknown): boolean {
@@ -22,21 +15,10 @@ export default class DefaultGraph extends Term<'DefaultGraph'> implements Defaul
             case this === other:
                 return true
             case other instanceof DefaultGraph:
+            case isDefaultGraph(other):
                 return true
-            case other instanceof Term:
-                return false
             default:
-                return isDefaultGraph(other)
-        }
-    }
-
-    toString(): string {
-        return ''
-    }
-
-    toJSON(): Pick<DefaultGraphSpec, 'termType'> {
-        return {
-            termType: 'DefaultGraph' as const
+                return false
         }
     }
 

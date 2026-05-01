@@ -1,49 +1,52 @@
-import type { Literal as LiteralSpec } from '@rdfjs/types'
-import Term, { isTerm } from './Term'
-import NamedNode, { NamedNodeSpec } from './NamedNode'
+import { type LiteralSpec, isLiteral } from './types'
+import { type NamedNodeSpec, isNamedNode } from './types'
+import { type LanguageTag, isLanguageTag } from './types'
+import { isNull, isString } from './types'
 
-export { LiteralSpec }
-
-export function isLiteral(term: unknown): term is LiteralSpec {
-    return isTerm(term) && term.termType === 'Literal'
-}
-
-export default abstract class Literal extends Term<'Literal'> implements LiteralSpec {
+export default class Literal implements LiteralSpec {
 
     get termType() {
         return 'Literal' as const
     }
 
-    abstract get value(): string
-    abstract get language(): string
-    abstract get datatype(): NamedNode
+    #value: string
+
+    get value(): string {
+        return this.#value
+    }
+
+    #language: LanguageTag | null
+
+    get language(): LanguageTag | '' {
+        return this.#language ?? ''
+    }
+
+    #datatype: NamedNodeSpec
+
+    get datatype(): NamedNodeSpec {
+        return this.#datatype
+    }
+
+    constructor(value: string, datatype: NamedNodeSpec, language?: string) {
+        if (!isString(value)) throw new Error('value must be a string')
+        if (!isNamedNode(datatype)) throw new Error('datatype must be a NamedNode')
+        if (!isNull(language) && !isLanguageTag(language)) throw new Error('language must be a LanguageTag string')
+        this.#value = value
+        this.#datatype = datatype
+        this.#language = language ?? null
+    }
 
     equals(other: unknown): boolean {
         switch (true) {
             case this === other:
                 return true
             case other instanceof Literal:
+            case isLiteral(other):
                 return this.value === other.value
-                    && this.language === other.language
                     && this.datatype.equals(other.datatype)
-            case other instanceof Term:
-                return false
+                    && this.language === other.language
             default:
-                return isLiteral(other)
-                    && this.value === other.value
-                    && this.language === other.language
-                    && this.datatype.equals(other.datatype)
-        }
-    }
-
-    // TODO: toString
-
-    toJSON(): Pick<LiteralSpec, 'termType' | 'value' | 'language'> & { datatype: Pick<NamedNodeSpec, 'termType' | 'value'> } {
-        return {
-            termType: 'Literal' as const,
-            value: this.value,
-            language: this.language,
-            datatype: this.datatype.toJSON()
+                return false
         }
     }
 

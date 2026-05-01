@@ -1,42 +1,32 @@
-import type { NamedNode as NamedNodeSpec } from '@rdfjs/types'
-import Term, { isTerm } from './Term'
+import { type NamedNodeSpec, isNamedNode } from './types'
+import { type IRI, isIRI } from './types'
 
-export { NamedNodeSpec }
+export default class NamedNode implements NamedNodeSpec<IRI> {
 
-export function isNamedNode(term: unknown): term is NamedNodeSpec {
-    return isTerm(term) && term.termType === 'NamedNode'
-}
-
-export default abstract class NamedNode extends Term<'NamedNode'> implements NamedNodeSpec {
-
-    get termType() {
-        return 'NamedNode' as const
+    get termType(): 'NamedNode' {
+        return 'NamedNode'
     }
 
-    abstract get value(): string
+    #value: IRI
+
+    get value(): IRI {
+        return this.#value
+    }
+
+    constructor(value: string) {
+        if (!isIRI(value)) throw new Error('value must be an IRI')
+        this.#value = value
+    }
 
     equals(other: unknown): boolean {
         switch (true) {
             case this === other:
                 return true
             case other instanceof NamedNode:
+            case isNamedNode(other):
                 return this.value === other.value
-            case other instanceof Term:
-                return false
             default:
-                return isNamedNode(other)
-                    && this.value === other.value
-        }
-    }
-
-    toString(): string {
-        return '<' + this.value + '>'
-    }
-
-    toJSON(): Pick<NamedNodeSpec, 'termType' | 'value'> {
-        return {
-            termType: 'NamedNode' as const,
-            value: this.value
+                return false
         }
     }
 
